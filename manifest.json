@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Discord Font Changer",
+  "version": "1.0.0",
+  "description": "디스코드(Discord) 웹의 본문/코드 폰트를 원하는 글꼴로 바꿔주는 확장 프로그램입니다.",
+  "permissions": ["storage", "fontSettings"],
+  "host_permissions": ["https://*.discord.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Discord 폰트 바꾸기",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.discord.com/*"],
+      "js": ["fonts.js", "content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord 폰트 바꾸기</title>
+    <style>
+      :root {
+        --paper: #faf9f6;
+        --ink: #1f1d1a;
+        --muted: #8a857c;
+        --line: #e7e3da;
+        --accent: #5865F2;
+        --card: #ffffff;
+        --shadow: 0 1px 2px rgba(31, 29, 26, 0.06),
+          0 8px 24px rgba(31, 29, 26, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 340px;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 18px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .brand .mark {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: var(--ink);
+        color: var(--paper);
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: -0.5px;
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      .brand h1 {
+        font-size: 14.5px;
+        font-weight: 650;
+        letter-spacing: -0.2px;
+      }
+      .brand p {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+
+      /* 토글 스위치 */
+      .switch {
+        position: relative;
+        width: 40px;
+        height: 23px;
+        flex: none;
+        cursor: pointer;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        inset: 0;
+        background: #d8d3c8;
+        border-radius: 999px;
+        transition: background 0.2s ease;
+      }
+      .slider::before {
+        content: "";
+        position: absolute;
+        height: 17px;
+        width: 17px;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
+      }
+      .switch input:checked + .slider {
+        background: var(--accent);
+      }
+      .switch input:checked + .slider::before {
+        transform: translateX(17px);
+      }
+
+      main {
+        padding: 16px 18px 6px;
+        transition: opacity 0.2s ease;
+      }
+      main.disabled {
+        opacity: 0.45;
+        pointer-events: none;
+      }
+
+      .field {
+        margin-bottom: 15px;
+      }
+      .field label {
+        display: block;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 6px;
+      }
+
+      select {
+        width: 100%;
+        padding: 9px 11px;
+        font-size: 13.5px;
+        color: var(--ink);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        cursor: pointer;
+        appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%238a857c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      select:hover {
+        border-color: #d3cdc1;
+      }
+      select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.15);
+      }
+
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 9px;
+        font-size: 12.5px;
+        color: var(--ink);
+        cursor: pointer;
+        user-select: none;
+      }
+      .check input {
+        width: 15px;
+        height: 15px;
+        accent-color: var(--accent);
+        cursor: pointer;
+      }
+
+      /* 미리보기 */
+      .preview {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        padding: 14px 14px 13px;
+        box-shadow: var(--shadow);
+        margin-top: 2px;
+      }
+      .preview .tag {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 7px;
+      }
+      #previewBody {
+        font-size: 16px;
+        line-height: 1.55;
+        color: var(--ink);
+        word-break: keep-all;
+      }
+      #previewBody .small {
+        font-size: 12.5px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      #previewCode {
+        margin-top: 10px;
+        padding: 8px 10px;
+        background: #f4f2ec;
+        border-radius: 7px;
+        font-size: 12.5px;
+        color: #5a554c;
+        white-space: pre-wrap;
+      }
+
+      footer {
+        padding: 11px 18px 14px;
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      footer .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #c5cf6a;
+        flex: none;
+      }
+      footer .dot.off {
+        background: #d8d3c8;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="mark">Aa</div>
+        <div>
+          <h1>Discord 폰트 바꾸기</h1>
+          <p>본문과 코드 글꼴을 바꿔요</p>
+        </div>
+      </div>
+      <label class="switch" title="켜기 / 끄기">
+        <input type="checkbox" id="enabled" />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <main id="main">
+      <div class="field">
+        <label for="bodyFont">본문 폰트</label>
+        <select id="bodyFont"></select>
+      </div>
+
+      <div class="field">
+        <label for="codeFont">코드 폰트</label>
+        <select id="codeFont"></select>
+        <label class="check">
+          <input type="checkbox" id="applyToCode" />
+          코드 블록·인라인 코드에도 적용
+        </label>
+      </div>
+
+      <div class="preview">
+        <div class="tag">미리보기</div>
+        <div id="previewBody">
+          다람쥐 헌 쳇바퀴에 타고파
+          <div class="small">Sphinx of black quartz, judge my vow · 0123456789</div>
+        </div>
+        <div id="previewCode">const greet = () =&gt; "Hello, 노션!";</div>
+      </div>
+    </main>
+
+    <footer>
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Discord 탭에 자동으로 적용됩니다</span>
+    </footer>
+
+    <script src="fonts.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
